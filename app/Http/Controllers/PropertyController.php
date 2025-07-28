@@ -16,7 +16,25 @@ class PropertyController extends Controller
 {
    public function index(Request $request)
     {
-        
+        $q = Property::with('agent','location','country');
+
+        if ($s = $request->search) {
+            $q->where('name','like',"%{$s}%")
+            ->orWhereHas('agent', fn($q2)=> $q2->where('name','like',"%{$s}%"));
+        }
+        if ($d = $request->start) {
+            $q->whereDate('created_at','>=',$d);
+        }
+        if ($d2 = $request->end) {
+            $q->whereDate('created_at','<=',$d2);
+        }
+
+        $perPage = $request->perPage ?: 10;
+        $properties = $q->paginate($perPage);
+
+        $locations = Location::pluck('name','id');
+
+        return view('listings.index', compact('properties','locations'));
     }
 
 
@@ -89,7 +107,39 @@ class PropertyController extends Controller
      */
     public function show(string $id)
     {
-        
+         // Decode hashid if using Hashidable or similar trait
+        $property = Property::with([
+            'media',          // Spatie MediaLibrary images
+            'agent',          // The agent who listed the property
+            'type',           // e.g., Apartment, Villa
+            'condition',      // e.g., Newly Built
+            'furnishingStatus', // e.g., Unfurnished
+            'location',       // e.g., UAE, Dubai
+            'landlord'        // If you want to show who owns it
+        ])->where('id', $id)->firstOrFail();
+
+        // Eager load media
+        $images = $property->getMedia('images')->map(function ($media) {
+            return [
+                'thumb' => $media->getUrl('thumb'),
+                'medium' => $media->getUrl('medium'),
+                'large' => $media->getUrl('large'),
+                'original' => $media->getUrl(),
+            ];
+        });
+
+        // Fetch similar listings: same location or type, excluding current property
+        $similarListings = Property::with('media')
+            ->where('id', '!=', $property->id)
+            ->where(function ($query) use ($property) {
+                $query->where('location_id', $property->location_id)
+                    ->orWhere('property_type_id', $property->property_type_id);
+            })
+            ->latest()
+            ->take(2)
+            ->get();
+
+        return view('listings.show', compact('property', 'images', 'similarListings'));
     }
 
     /**
