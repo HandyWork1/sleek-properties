@@ -2,21 +2,40 @@
 
     {{-- Left Section: Toggle + Breadcrumb --}}
     <div class="flex items-center space-x-4">
+        {{-- Mobile Toggle Button --}}
+        <button @click="sidebarMobileOpen = true"
+            class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition md:hidden">
+            <x-heroicon-o-bars-3-bottom-left class="w-6 h-6" />
+        </button>
 
         {{-- Breadcrumb --}}
+        @php
+            $segments = request()->segments();
+            $breadcrumbMap = [
+                'dashboard' => 'Dashboard',
+                'properties' => 'All Listings',
+                'enquiries' => 'Enquiries',
+                'leads' => 'Leads',
+            ];
+        @endphp
+
         <div class="text-sm text-gray-500 dark:text-gray-300 flex items-center space-x-1">
-            <span>Page</span>
-            @foreach(request()->segments() as $index => $segment)
-                <span>/</span>
-                @if ($index === array_key_last(request()->segments()))
-                    <span class="text-gray-800 dark:text-white font-semibold capitalize">
-                        {{ ucwords(str_replace('-', ' ', $segment)) }}
-                    </span>
+            <span> Page /</span>
+            @foreach($segments as $index => $segment)
+                @if ($index > 0)
+                    <span>/</span>
+                @endif
+                @php
+                    $label = $breadcrumbMap[$segment] ?? ucwords(str_replace('-', ' ', $segment));
+                @endphp
+                @if ($index === array_key_last($segments))
+                    <span class="text-gray-800 dark:text-white font-semibold">{{ $label }}</span>
                 @else
-                    <span class="capitalize">{{ ucwords(str_replace('-', ' ', $segment)) }}</span>
+                    <span>{{ $label }}</span>
                 @endif
             @endforeach
         </div>
+
     </div>
 
     {{-- Theme + Profile --}}
