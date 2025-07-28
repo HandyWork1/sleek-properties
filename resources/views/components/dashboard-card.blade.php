@@ -18,7 +18,7 @@
         </div>
     @else
         {{-- Actual Content --}}
-        <div>
+        <div class="pr-16">
             <div class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ $title }}</div>
             <div class="text-2xl font-bold text-gray-900 dark:text-white mt-1">{{ $value }}</div>
         </div>
