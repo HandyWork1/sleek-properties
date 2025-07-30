@@ -71,6 +71,20 @@
                     x-cloak
                 >All Listings</span>
                 </x-nav-link>
+
+                <x-nav-link
+                :href="route('enquiries.index')"
+                :active="request()->routeIs('enquiries*')"
+                icon="document"
+                class="group relative"
+                >
+                <span x-show="sidebarExpanded" class="ml-3">Enquiries</span>
+                <span
+                    x-show="!sidebarExpanded"
+                    class="absolute left-full ml-3 whitespace-nowrap bg-gray-700 text-white text-xs rounded px-2 py-1 hidden group-hover:block"
+                    x-cloak
+                >Enquiries</span>
+                </x-nav-link>
             </nav>
         </div>
     </div>
@@ -128,6 +142,21 @@
                     x-cloak
                 >
                     All Listings
+                </span>
+            </x-nav-link>
+
+            <x-nav-link 
+            :href="route('enquiries.index')" 
+            :active="request()->routeIs('enquiries*')" 
+            icon="document" 
+            class="group relative">
+                <span x-show="sidebarExpanded" class="ml-3">Enquiries</span>
+                <span
+                    x-show="!sidebarExpanded"
+                    class="absolute left-full ml-3 whitespace-nowrap bg-white dark:bg-gray-700 text-gray-600 dark:text-white text-xs rounded px-2 py-1 hidden group-hover:block"
+                    x-cloak
+                >
+                    Enquiries
                 </span>
             </x-nav-link>
         </nav>

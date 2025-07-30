@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EnquiryController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -20,6 +21,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         // ->name('dashboard.index')
         // ->middleware('can:manage-properties');
+    Route::resource('enquiries', EnquiryController::class)
+        ->names('enquiries')
+        ->except(['create', 'edit', 'update', 'destroy']);
 });
 
 require __DIR__.'/auth.php';
