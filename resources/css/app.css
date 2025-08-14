@@ -13,3 +13,24 @@
 .overflow-x-auto::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* Quill Editor Styles */
+.ql-toolbar.ql-snow {
+  border: none !important;
+  background-color: #f3f4f6 !important;
+  border-radius: 1rem 1rem 0 0 !important;
+}
+/* Dark Mode */
+.dark .ql-toolbar.ql-snow {
+  border: none !important;
+  background-color: #111827 !important;
+  border-radius: 1rem 1rem 0 0 !important;
+}
+
+.dark .ql-editor {
+  color: #f3f4f6 !important; 
+}
+
+.ql-container.ql-snow {
+  border: none !important;
+} 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EnquiryController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -20,6 +21,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         // ->name('dashboard.index')
         // ->middleware('can:manage-properties');
+    Route::resource('enquiries', EnquiryController::class)
+        ->names('enquiries')
+        ->only(['index', 'create',  'show', 'store']);
+        
+    Route::post('enquiries/{enquiry}/reply',[EnquiryController::class,'reply'])
+         ->name('enquiries.reply');
+    // Property‑triggered create:
+    // show the compose form
+    Route::get(
+        'properties/{property}/enquire',
+        [EnquiryController::class, 'create']
+    )->name('properties.enquire.create');
+    // process the form
+    Route::post(
+        'properties/{property}/enquire',
+        [EnquiryController::class, 'store']
+    )->name('properties.enquire');
 });
 
 require __DIR__.'/auth.php';

@@ -13,6 +13,12 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Quill Styles -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+
+    <!-- Quill Script -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
 </head>
 <body x-data="{ sidebarExpanded: true, sidebarMobileOpen: false }" class="font-sans antialiased overflow-x-hidden">
     <div class="flex min-h-screen transition-all duration-300 bg-gray-100 dark:bg-gray-900 overflow-x-hidden">
