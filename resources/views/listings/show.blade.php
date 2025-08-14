@@ -1,16 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col items-start space-y-3">
-        <a href="{{ url()->previous() }}"
-            class="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium text-blue-700 
-            border border-indigo-600 dark:border-indigo-700 rounded-md hover:bg-indigo-500 
-            hover:text-white dark:hover:bg-indigo-600 transition">
-            <x-heroicon-o-arrow-left class="w-4 h-4 mr-2"/>
-            Back
-        </a>
-        <h1 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
-            All Listings / {{ $property->name }}
-        </h1>
+            <a href="{{ url()->previous() }}"
+                class="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium text-blue-700 
+                border border-indigo-600 dark:border-indigo-700 rounded-md hover:bg-indigo-500 
+                hover:text-white dark:hover:bg-indigo-600 transition">
+                <x-heroicon-o-arrow-left class="w-4 h-4 mr-2"/>
+                Back
+            </a>
+            <h1 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                All Listings / {{ $property->name }}
+            </h1>
         </div>
     </x-slot>
 
@@ -135,10 +135,24 @@
         <aside class="space-y-1">
             <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm space-y-4">
                 <div class="text-xl font-bold text-gray-900 dark:text-gray-100">{{ format_price($property->price) }}</div>
-                <a href="#"
-                class="block w-full text-center px-4 py-2 font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-md transition">
-                Enquire
-                </a>
+                @php
+                    // Find existing enquiry if any:
+                    $existing = App\Models\Enquiry::where('property_id',$property->id)
+                                ->where('from_user_id', auth()->id())
+                                ->first();
+                @endphp
+                
+                @if($existing)
+                    <a
+                        href="{{ route('enquiries.show', $existing) }}"
+                        class="block w-full text-center px-4 py-2 font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-md"
+                    >View Your Enquiry</a>
+                @else
+                    <a
+                        href="{{ route('properties.enquire.create', $property) }}"
+                        class="block w-full text-center px-4 py-2 font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-md"
+                    >Enquire</a>
+                @endif
             </div>
 
             {{-- Agent Details --}}

@@ -75,7 +75,7 @@
                 <x-nav-link
                 :href="route('enquiries.index')"
                 :active="request()->routeIs('enquiries*')"
-                icon="document"
+                icon="chat-bubble-left-ellipsis"
                 class="group relative"
                 >
                 <span x-show="sidebarExpanded" class="ml-3">Enquiries</span>
@@ -148,7 +148,7 @@
             <x-nav-link 
             :href="route('enquiries.index')" 
             :active="request()->routeIs('enquiries*')" 
-            icon="document" 
+            icon="chat-bubble-left-ellipsis" 
             class="group relative">
                 <span x-show="sidebarExpanded" class="ml-3">Enquiries</span>
                 <span
