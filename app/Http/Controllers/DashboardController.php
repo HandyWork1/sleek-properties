@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Models\Location;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -20,7 +21,7 @@ class DashboardController extends Controller
             $query->where('location_id',$loc);
         }
 
-        $properties = $query->paginate(10);
+        $properties = $query->where('agent_id', Auth::id())->paginate(10);
 
         $locations = Location::pluck('name','id');
 

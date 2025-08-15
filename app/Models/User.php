@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Enquiry;
 
 class User extends Authenticatable
 {
@@ -57,4 +58,24 @@ class User extends Authenticatable
     {
         return $this->first_name . ' ' . $this->last_name;
     }
+
+    /**
+     * Get the enquiries sent by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function enquiriesSent()
+    {
+        return $this->hasMany(Enquiry::class, 'from_user_id');    
+    }
+
+    /**
+     * Get the enquiries received by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function enquiriesReceived()
+    {
+        return $this->hasMany(Enquiry::class, 'to_user_id');    
+    }   
 }
